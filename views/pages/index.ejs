@@ -1,0 +1,173 @@
+  <header id="navbar">
+    <div class="logo">
+      <a href="#">
+        <img src="/Img/Logo-Ensalada.png" alt="Valery's Green - Catering Saludable">
+      </a>
+      <span>Valery's Green</span>
+    </div>
+    <nav>
+      <a href="#beneficios">Beneficios</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#preguntas">Preguntas</a>
+      <a href="#contacto">Contacto</a> <br/>
+      <a href="/login">Iniciar Seccion</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Nutrición que inspira sin perder los sabores que enamoran</h1>
+      <p>BY Valery's Green</p>
+    </div>
+  </div>
+
+  <section class="section" id="beneficios">
+    <h2>Beneficios de nuestro servicio</h2>
+    <div class="carousel">
+      <div class="carousel-track-container">
+        <ul class="carousel-track">
+          <li class="carousel-slide">
+            <img src="https://assets.elgourmet.com/wp-content/uploads/2023/03/145olht02j_ensalada.jpg" alt="Ensaladas frescas">
+            <p>Ensaladas y comidas ligeras, frescas y saludables para su paladar.</p>
+          </li>
+          <li class="carousel-slide">
+            <img src="Img/Buffets-Demostración.jpg" alt="Buffets para eventos">
+            <p>Los mejores platillos para eventos y reuniones</p>
+          </li>
+          <li class="carousel-slide">
+            <img src="https://img.freepik.com/fotos-premium/comida-dietetica-pechuga-pollo-arroz-verduras-estilo-vida-saludable-nutricion-deportiva_2829-892.jpg" alt="Comida saludable">
+            <p>Almuerzos con proteinas y nutrientes esenciales para su salud.</p>
+         </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const track = document.querySelector('.carousel-track');
+      const slides = document.querySelectorAll('.carousel-slide');
+      const navButtons = document.querySelectorAll('.carousel-nav button');
+      let currentIndex = 0;
+      let intervalId;
+  
+      function updateCarousel() {
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        navButtons.forEach((btn, index) => {
+          btn.classList.toggle('active', index === currentIndex);
+        });
+      }
+  
+      function startAutoPlay() {
+        intervalId = setInterval(() => {
+          currentIndex = (currentIndex + 1) % slides.length;
+          updateCarousel();
+        }, 3000);
+      }
+  
+      function stopAutoPlay() {
+        clearInterval(intervalId);
+      }
+      navButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+          currentIndex = index;
+          updateCarousel();
+          stopAutoPlay();
+          startAutoPlay();
+        });
+      });
+  
+      startAutoPlay();
+
+      track.addEventListener('mouseenter', stopAutoPlay);
+      track.addEventListener('mouseleave', startAutoPlay);
+    });
+  </script>
+  <section class="section" id="servicios">
+    <h2>Servicios que ofrecemos</h2>
+    <div class="services">
+      <div class="card service-card" style="background-image: url('https://hips.hearstapps.com/hmg-prod/images/sandwich-with-avocado-and-poached-eggs-royalty-free-image-930455382-1534448229.jpg?resize=640:*')">
+        <a href="/servicios#desayunos"><div class="overlay">Desayunos</div></a>
+    </div>
+      <div class="card service-card" style="background-image: url('https://planosdehosteleria.com/wp-content/uploads/2023/04/Buffets-para-hosteleria.jpg')">
+        <a href="/servicios#buffets"><div class="overlay">Buffets</div></a>
+   </div>
+      <div class="card service-card" style="background-image: url('https://i.pinimg.com/736x/1a/a5/98/1aa59818bdf7970e671cc7fbcf4300dd.jpg')">
+        <a href="/servicios#almuerzos"><div class="overlay">Almuerzos</div></a>
+   </div>
+      <div class="card service-card" style="background-image: url('https://content.cuerpomente.com/medio/2019/01/29/combinado_860b95af_1200x732.jpg')">
+        <a href="/servicios#cenas"><div class="overlay">Cenas</div></a>
+   </div>
+    </div>
+  </section>
+
+  <section class="faq-container" id="preguntas">
+    <h2>Preguntas Frecuentes</h2>
+    <details class="faq-item">
+      <summary>¿Con cuánto tiempo tengo que reservar el catering?</summary>
+      <p>Debido a la alta demanda de pedidos, la reserva se tiene que realizar lo antes posible. Ya que Valery's Green trabaja con reservas limitadas.</p>
+    </details>
+    <details class="faq-item">
+      <summary>¿Cómo se formaliza la reserva y el pago?</summary>
+      <p>Una vez elegido el menú y número de comensales se realizará un presupuesto del catering total. La reserva será un 20% del total de la factura final y se tendrá que abonar por transferencia bancaria en concepto de Reserva. El resto del importe se abonará el mismo día del evento</p>
+    </details>
+    <details class="faq-item">
+      <summary>¿Existen bonificaciones por pronto pago?</summary>
+      <p>Sí, hasta un 3% de descuento, según la cuantía, si se abona el servicio con días de antelación.</p>
+    </details>
+    <details class="faq-item">
+      <summary>¿Qué pasa si su evento se cancela por una fuerza mayor?</summary>
+      <p>Si la fecha está comprendida antes de los últimos 10 días hábiles del evento, se podrá devolver la reserva con los gastos de gestión pertinentes. Si la cancelación está comprendida entre los últimos 9 días al evento, no se podrá devolver la reserva</p>
+    </details>
+  </section>
+
+  <section class="section" id="contacto">
+    <h2>Contáctanos</h2>
+    <div class="contact-card">
+      <div class="contact-info">
+        <h3>Información de contacto</h3>
+        <p><span>📍</span> Callejón Miranda 3-A</p>
+        <p><span>📞</span> +58 412-6859405</p>
+        <p><span>📧</span> valerysgreen@gmail.com</p>
+      </div>
+      <div class="contact-hours">
+        <h3>Horario de atención</h3>
+        <p><strong>Lunes a Viernes:</strong> 8am - 6pm</p>
+        <p><strong>Sábados:</strong> 9am - 3pm</p>
+      </div>
+    </div>
+  </section>
+
+<footer>
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Valery's Green</h3>
+      <p>Nutrición que inspira sin perder los sabores que enamoran.</p>
+    </div>
+
+    <div class="footer-section">
+      <h3>Servicios</h3>
+      <a href="/servicios#desayunos">Desayuno</a>
+      <a href="/servicios#almuerzos">Almuerzos</a>
+      <a href="/servicios#cenas">Cenas</a>
+      <a href="/servicios#buffets">Buffets</a>
+    </div>
+
+    <div class="footer-section">
+      <h3>Escríbenos</h3>
+      <div class="social-icons">
+        <a href="https://wa.me/584126859405" target="_blank" aria-label="WhatsApp">
+          <img src="/Img/whatsapp 240.png" alt="WhatsApp">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    &copy; 2025 Valery's Green - Todos los derechos reservados. | Diseñado con ❤️
+  </div>
+</footer>
+
+<a href="https://wa.me/584126859405" class="whatsapp-float" target="_blank">
+  <img src="/Img/whatsapp.png" alt="WhatsApp">
+  <span>¡Contáctanos!</span>
+</a>

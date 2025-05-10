@@ -1,0 +1,104 @@
+  <style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+form {
+  border: 1px solid #ccc;
+  padding: 30px;
+  border-radius: 16px;
+  width: 320px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  background-color: #ffffff;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin: 12px 0;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: border 0.3s;
+}
+
+input:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #218838;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+}
+
+  </style>
+  
+  <h2>Iniciar Sesión</h2>
+  <form method="POST" action="/auth/login">
+    <input type="text" name="username" placeholder="Usuario" required>
+    <input type="password" name="password" placeholder="Contraseña" required>
+    <button type="submit">Entrar</button>
+    <p><a href="/forgot-password">¿Ha olvidado su contraseña?</a></p>
+  </form>
+
+
+    <script>
+    const form = document.getElementById("loginForm");
+    const errorMsg = document.getElementById("errorMsg");
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault(); // Evita el envío automático
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      if (username === "admin" && password === "admin123") {
+        // Crear un formulario dinámico para enviar los datos reales
+        const realForm = document.createElement("form");
+        realForm.method = "POST";
+        realForm.action = "/auth/login";
+
+        const userInput = document.createElement("input");
+        userInput.type = "hidden";
+        userInput.name = "username";
+        userInput.value = username;
+
+        const passInput = document.createElement("input");
+        passInput.type = "hidden";
+        passInput.name = "password";
+        passInput.value = password;
+
+        realForm.appendChild(userInput);
+        realForm.appendChild(passInput);
+        document.body.appendChild(realForm);
+        realForm.submit();
+      } else {
+        errorMsg.textContent = "Credenciales incorrectas";
+      }
+    });
+  </script>

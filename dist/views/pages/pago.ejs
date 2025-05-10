@@ -1,0 +1,205 @@
+
+<style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .payment-form {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        .payment-form h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        .expiration-group {
+            display: flex;
+            gap: 15px;
+        }
+        .expiration-group .form-group {
+            flex: 1;
+        }
+        .submit-btn {
+            background-color: #00ff37;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+        .submit-btn:hover {
+            background-color: #2bff00;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+            .payment-status {
+        margin-top: 20px;
+        padding: 15px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+        display: none;
+    }
+
+    .processing {
+        background-color: #fffbcc;
+        color: #665c00;
+        border: 1px solid #ffe58f;
+    }
+
+    .success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    </style>
+
+
+<div class="payment-form">
+    <h2>Pago</h2>
+    <h2>Detalles del Pago</h2>
+    <form id="paymentForm" action="/payment/add" method="POST">
+        <div class="form-group">
+            <label for="email">Correo Electrónico:</label>
+            <input type="email" id="email" name="email" required placeholder="Correo Electrónico">
+        </div>
+
+        <div class="form-group">
+            <label for="cardholderName">Nombre del Titular de la Tarjeta:</label>
+            <input type="text" id="cardholderName" name="cardholderName" required placeholder="Nombre en la Tarjeta">
+        </div>
+
+        <div class="form-group">
+            <label for="cardNumber">Número de Tarjeta:</label>
+            <input type="text" id="cardNumber" name="cardNumber" inputmode="numeric" pattern="[0-9\s]{13,19}" maxlength="19" required placeholder="xxxx xxxx xxxx xxxx">
+        </div>
+
+        <div class="expiration-group">
+            <div class="form-group">
+                <label for="expiryMonth">Mes de Expiración:</label>
+                <select id="expiryMonth" name="expiryMonth" required>
+                    <option value="">Mes</option>
+                    <% for (let m = 1; m <= 12; m++) { %>
+                        <option value="<%= m.toString().padStart(2, '0') %>"><%= m.toString().padStart(2, '0') %></option>
+                    <% } %>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="expiryYear">Año de Expiración:</label>
+                <select id="expiryYear" name="expiryYear" required>
+                    <option value="">Año</option>
+                    <% for (let y = 2025; y <= 2035; y++) { %>
+                        <option value="<%= y %>"><%= y %></option>
+                    <% } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="cvv">Código de Seguridad (CVV/CVC):</label>
+            <input type="text" id="cvv" name="cvv" inputmode="numeric" pattern="[0-9]{3,4}" maxlength="4" required placeholder="CVC">
+        </div>
+
+        <div class="form-group">
+            <label for="amount">Monto a Pagar:</label>
+            <input type="number" id="amount" name="amount" step="0.01" min="0.01" required placeholder="Ej: 100.50">
+        </div>
+
+        <div class="form-group">
+            <label for="currency">Moneda:</label>
+            <select id="currency" name="currency" required>
+                <option value="">Seleccione Moneda</option>
+                <option value="USD">Dólar Estadounidense (USD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="GBP">Libra Esterlina (GBP)</option>
+                <option value="CAD">Dólar Canadiense (CAD)</option>
+                <option value="AUD">Dólar Australiano (AUD)</option>
+                <option value="MXN">Peso Mexicano (MXN)</option>
+                <option value="COP">Peso Colombiano (COP)</option>
+                <option value="CLP">Peso Chileno (CLP)</option>
+                <option value="ARS">Peso Argentino (ARS)</option>
+            </select>
+        </div>
+
+
+        <button type="submit" class="submit-btn">Realizar Pago</button>
+        <div id="statusMessage" class="payment-status"></div>
+    </form>
+</div>
+
+
+
+<script>
+    const form = document.getElementById("paymentForm");
+    const statusMessage = document.getElementById("statusMessage");
+    const cardNumberInput = document.getElementById("cardNumber");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        statusMessage.textContent = "Procesando pago...";
+        statusMessage.className = "payment-status processing";
+        statusMessage.style.display = "block";
+
+        setTimeout(() => {
+            statusMessage.textContent = "Pago realizado";
+            statusMessage.className = "payment-status success";
+            form.reset();
+        }, 3000);
+    });
+
+
+    cardNumberInput.addEventListener("input", function () {
+        let value = this.value.replace(/\D/g, '');
+        value = value.slice(0, 16); 
+        let formatted = value.match(/.{1,4}/g); 
+        this.value = formatted ? formatted.join(' ') : '';
+    });
+
+    // CVV solo números
+    document.getElementById("cvv").addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "");
+    });
+</script>
+
